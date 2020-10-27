@@ -1,0 +1,30 @@
+---
+- hosts: test_servers
+  tasks:
+    - name: Check if root password is unset
+      shell: >
+        mysql -u root
+        -proot
+        -h localhost
+        -e "quit"
+      changed_when: false
+      ignore_errors: true
+      register: root_pwd_check
+
+    - name: set root pass
+      mysql_user:
+        name: root
+        password: "root"
+        host: "localhost"
+        login_user: root
+        login_password: ""
+        state: present
+      when: root_pwd_check.rc != 0
+
+    - name: remove all anonymous user
+      mysql_user:
+        name: ""
+        state: absent
+        host: localhost
+        login_user: root
+        login_password: "root"

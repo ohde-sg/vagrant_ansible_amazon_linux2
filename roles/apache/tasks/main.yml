@@ -1,0 +1,24 @@
+---
+- name: install apache packages
+  yum: name="{{ packages }}"
+  become: yes
+  vars:
+    packages:
+      - httpd
+
+- name: enable mysql service
+  service: name=httpd enabled=yes
+  become: yes
+
+- name: start mysql service
+  service: name=httpd state=started
+  become: yes
+
+- name: set www folder permission
+  become: yes
+  shell: |-
+    usermod -a -G apache vagrant
+    chown -R vagrant:apache /var/www
+    chmod 2775 /var/www
+    find /var/www -type d -exec chmod 2775 {} \;
+    find /var/www -type f -exec chmod 0664 {} \;

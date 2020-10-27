@@ -1,0 +1,12 @@
+---
+- name: install php7,4
+  become: yes
+  shell: |-
+    amazon-linux-extras install -y php7.4
+
+- name: install php packages
+  yum: name="{{ packages }}"
+  become: yes
+  vars:
+    packages:
+      - composer

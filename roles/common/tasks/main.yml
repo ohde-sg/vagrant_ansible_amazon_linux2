@@ -1,0 +1,16 @@
+---
+- name: set locale ja
+  become: yes
+  shell: >
+    localectl set-locale LANG=ja_JP.utf8
+
+- name: source locale
+  shell: >
+    source /etc/locale.conf
+
+- name: install packages
+  yum: name="{{ packages }}"
+  become: yes
+  vars:
+    packages:
+      - python-pip

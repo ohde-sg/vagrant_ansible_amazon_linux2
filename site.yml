@@ -1,0 +1,9 @@
+#
+# site.yml
+#
+- hosts: test_servers
+  roles:
+    - common
+    - mysql
+    - php
+    - apache
